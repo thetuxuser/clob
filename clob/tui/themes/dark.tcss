@@ -1,0 +1,265 @@
+/* clob TUI stylesheet */
+
+Screen {
+    background: #0d1117;
+    color: #e6edf3;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+
+#sidebar {
+    width: 26;
+    background: #161b22;
+    border-right: solid #30363d;
+    height: 100%;
+}
+
+#sidebar-title {
+    background: #161b22;
+    color: #58a6ff;
+    text-style: bold;
+    padding: 0 1;
+    border-bottom: solid #30363d;
+    height: 3;
+    content-align: center middle;
+}
+
+#session-list {
+    height: 1fr;
+    background: #161b22;
+    scrollbar-color: #30363d #161b22;
+}
+
+.session-item {
+    padding: 0 1;
+    color: #8b949e;
+    height: 2;
+}
+
+.session-item:hover {
+    background: #21262d;
+    color: #e6edf3;
+}
+
+.session-item.active {
+    background: #1f6feb33;
+    color: #58a6ff;
+    border-left: solid #1f6feb;
+}
+
+#sidebar-footer {
+    background: #161b22;
+    border-top: solid #30363d;
+    height: 3;
+    padding: 0 1;
+    color: #8b949e;
+    content-align: left middle;
+}
+
+/* ── Main Area ───────────────────────────────────────── */
+
+#main-area {
+    background: #0d1117;
+    height: 100%;
+}
+
+/* ── Header / Toolbar ────────────────────────────────── */
+
+#header {
+    background: #161b22;
+    border-bottom: solid #30363d;
+    height: 3;
+    padding: 0 2;
+    color: #e6edf3;
+}
+
+#provider-label {
+    color: #3fb950;
+    text-style: bold;
+}
+
+#model-label {
+    color: #8b949e;
+}
+
+#header-title {
+    color: #58a6ff;
+    text-style: bold;
+}
+
+/* ── Chat Window ─────────────────────────────────────── */
+
+#chat-scroll {
+    height: 1fr;
+    background: #0d1117;
+    scrollbar-color: #30363d #0d1117;
+    padding: 1 2;
+}
+
+#chat-container {
+    height: auto;
+}
+
+.message-block {
+    margin: 1 0;
+    height: auto;
+}
+
+.user-block {
+    align: right top;
+}
+
+.assistant-block {
+    align: left top;
+}
+
+.user-bubble {
+    background: #1f6feb22;
+    border: solid #1f6feb44;
+    padding: 0 1;
+    color: #e6edf3;
+    max-width: 80%;
+    height: auto;
+}
+
+.assistant-bubble {
+    background: #161b22;
+    border: solid #30363d;
+    padding: 0 1;
+    color: #e6edf3;
+    max-width: 90%;
+    height: auto;
+}
+
+.role-label {
+    color: #8b949e;
+    text-style: bold;
+    margin-bottom: 0;
+}
+
+.user-role {
+    color: #58a6ff;
+}
+
+.assistant-role {
+    color: #3fb950;
+}
+
+/* ── Input Area ──────────────────────────────────────── */
+
+#input-area {
+    height: 5;
+    background: #161b22;
+    border-top: solid #30363d;
+    padding: 1 2;
+}
+
+#prompt-input {
+    background: #0d1117;
+    border: solid #30363d;
+    color: #e6edf3;
+    height: 3;
+    padding: 0 1;
+}
+
+#prompt-input:focus {
+    border: solid #1f6feb;
+}
+
+/* ── Status Bar ──────────────────────────────────────── */
+
+#status-bar {
+    background: #161b22;
+    border-top: solid #30363d;
+    height: 1;
+    color: #8b949e;
+    padding: 0 1;
+}
+
+.status-ok {
+    color: #3fb950;
+}
+
+.status-streaming {
+    color: #d29922;
+}
+
+.status-error {
+    color: #f85149;
+}
+
+/* ── Selectors ───────────────────────────────────────── */
+
+Select {
+    background: #161b22;
+    border: solid #30363d;
+    color: #e6edf3;
+    width: 30;
+}
+
+Select:focus {
+    border: solid #1f6feb;
+}
+
+SelectOverlay {
+    background: #21262d;
+    border: solid #30363d;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+
+Button {
+    background: #21262d;
+    color: #e6edf3;
+    border: solid #30363d;
+}
+
+Button:hover {
+    background: #30363d;
+    border: solid #58a6ff;
+}
+
+Button.primary {
+    background: #1f6feb;
+    color: white;
+    border: solid #388bfd;
+}
+
+Button.primary:hover {
+    background: #388bfd;
+}
+
+Button.danger {
+    background: #da3633;
+    color: white;
+    border: solid #f85149;
+}
+
+/* ── Settings Screen ─────────────────────────────────── */
+
+#settings-screen {
+    background: #0d1117;
+    padding: 2;
+}
+
+#settings-title {
+    color: #58a6ff;
+    text-style: bold;
+    margin-bottom: 1;
+}
+
+/* ── Modal ───────────────────────────────────────────── */
+
+ModalScreen {
+    background: #0d111780;
+    align: center middle;
+}
+
+#modal-dialog {
+    background: #161b22;
+    border: solid #30363d;
+    padding: 2;
+    width: 60;
+    height: auto;
+    max-height: 30;
+}

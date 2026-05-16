@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>clob</id>
+    <version>0.2.0</version>
+    <packageSourceUrl>https://github.com/crishacks/clob</packageSourceUrl>
+    <owners>crishacks</owners>
+    <title>clob — Universal AI in your terminal</title>
+    <authors>crishacks</authors>
+    <projectUrl>https://github.com/crishacks/clob</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/crishacks/clob/main/docs/icon.png</iconUrl>
+    <licenseUrl>https://github.com/crishacks/clob/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/crishacks/clob</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/crishacks/clob/issues</bugTrackerUrl>
+    <tags>ai terminal tui llm ollama openrouter groq python cli</tags>
+    <summary>Universal AI in your terminal — streaming TUI, multiple providers, local models</summary>
+    <description><![CDATA[
+# clob — Universal AI in your terminal
+
+clob is an open-source universal AI terminal platform with a modern TUI.
+
+## Features
+
+- **Modern TUI** — Full Textual-powered terminal interface with sidebar, streaming chat, markdown rendering
+- **Multiple providers** — OpenRouter, Groq, NVIDIA Build, Ollama (local), any OpenAI-compatible API
+- **Real-time streaming** — Token-by-token response rendering
+- **Persistent memory** — SQLite-backed session and chat history
+- **Workspace context** — Inject files and directories into AI prompts with @file, @dir
+- **Analytics** — Track token usage and estimated cost
+- **Themes** — dark, light, cyberpunk, nord and custom themes
+- **Plugin system** — Extend with custom providers, tools, and agents
+
+## Quick Start
+
+```
+# Set your API key
+setx OPENROUTER_API_KEY "your-key-here"
+
+# Launch TUI
+clob
+
+# Or send a message
+clob chat "Hello!"
+```
+
+## Configuration
+
+Config file: `%USERPROFILE%\.config\clob\config.toml`
+
+## Documentation
+
+Full documentation: https://github.com/crishacks/clob
+    ]]></description>
+    <releaseNotes>https://github.com/crishacks/clob/blob/main/CHANGELOG.md</releaseNotes>
+    <dependencies>
+      <dependency id="python312" version="3.12.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

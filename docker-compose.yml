@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  clob:
+    build: .
+    image: ghcr.io/crishacks/clob:latest
+    container_name: clob
+    stdin_open: true
+    tty: true
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+      - TERM=xterm-256color
+    volumes:
+      - clob-config:/root/.config/clob
+    networks:
+      - clob-net
+
+  # Optional: local Ollama service
+  ollama:
+    image: ollama/ollama:latest
+    container_name: clob-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - clob-net
+    profiles:
+      - ollama
+
+volumes:
+  clob-config:
+  ollama-data:
+
+networks:
+  clob-net:
