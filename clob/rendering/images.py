@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import base64
 import os
-import sys
 from pathlib import Path
 
 
@@ -27,7 +26,7 @@ class TerminalCapability:
         """Return best available renderer: 'kitty' | 'iterm' | 'sixel' | 'ascii'."""
         term = os.environ.get("TERM", "")
         term_program = os.environ.get("TERM_PROGRAM", "")
-        colorterm = os.environ.get("COLORTERM", "")
+        os.environ.get("COLORTERM", "")
 
         if "kitty" in term:
             return "kitty"
@@ -67,7 +66,7 @@ class ImageRenderer:
         try:
             data = base64.standard_b64encode(path.read_bytes()).decode()
             # Kitty protocol: ESC_G + base64 + ESC_\
-            chunks = [data[i:i+4096] for i in range(0, len(data), 4096)]
+            chunks = [data[i : i + 4096] for i in range(0, len(data), 4096)]
             result = []
             for i, chunk in enumerate(chunks):
                 m = 1 if i < len(chunks) - 1 else 0
@@ -93,10 +92,8 @@ class ImageRenderer:
         """Attempt sixel via img2sixel if available, else fallback."""
         try:
             import subprocess
-            result = subprocess.run(
-                ["img2sixel", str(path)],
-                capture_output=True, timeout=5
-            )
+
+            result = subprocess.run(["img2sixel", str(path)], capture_output=True, timeout=5)
             if result.returncode == 0:
                 return result.stdout.decode(errors="replace")
         except (FileNotFoundError, Exception):
@@ -108,6 +105,7 @@ class ImageRenderer:
         try:
             # Try to use Pillow if available
             from PIL import Image
+
             img = Image.open(path).convert("L")  # grayscale
             img.thumbnail((60, 30))
             w, h = img.size

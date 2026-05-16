@@ -6,10 +6,9 @@ Entry point for CLI and TUI.
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
-from pathlib import Path
 import sys
-from typing import Annotated, Optional
+from pathlib import Path
+from typing import Annotated
 
 import typer
 
@@ -23,6 +22,7 @@ app = typer.Typer(
 
 def _get_config():
     from .config.settings import AppConfig
+
     return AppConfig.load()
 
 
@@ -34,6 +34,7 @@ def main(
     """[bold blue]clob[/bold blue] — Universal AI in your terminal."""
     if version:
         from . import __version__
+
         typer.echo(f"clob {__version__}")
         raise typer.Exit()
 
@@ -46,13 +47,14 @@ def _launch_tui() -> None:
     """Launch the Textual TUI."""
     try:
         from .tui.app import ClobApp
+
         config = _get_config()
         app_instance = ClobApp(config)
         app_instance.run()
     except ImportError as e:
         typer.echo(f"[red]Failed to launch TUI: {e}[/red]")
         typer.echo("Install TUI dependencies: pip install clob[tui]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from e
     except KeyboardInterrupt:
         pass
 
@@ -60,8 +62,8 @@ def _launch_tui() -> None:
 @app.command("chat")
 def chat_cmd(
     message: Annotated[str, typer.Argument(help="Message to send")] = "",
-    provider: Annotated[Optional[str], typer.Option("--provider", "-p")] = None,
-    model: Annotated[Optional[str], typer.Option("--model", "-m")] = None,
+    provider: Annotated[str | None, typer.Option("--provider", "-p")] = None,
+    model: Annotated[str | None, typer.Option("--model", "-m")] = None,
     no_stream: Annotated[bool, typer.Option("--no-stream")] = False,
 ) -> None:
     """Send a single chat message (non-TUI mode)."""
@@ -71,6 +73,7 @@ def chat_cmd(
 
     async def _run():
         from .core.runtime import Runtime
+
         config = _get_config()
         runtime = Runtime(config)
         if provider:
@@ -95,11 +98,13 @@ def chat_cmd(
 
 @app.command("models")
 def models_cmd(
-    provider: Annotated[Optional[str], typer.Option("--provider", "-p")] = None,
+    provider: Annotated[str | None, typer.Option("--provider", "-p")] = None,
 ) -> None:
     """List available models."""
+
     async def _run():
         from .providers.registry import ProviderRegistry
+
         config = _get_config()
         reg = ProviderRegistry()
         reg.load_from_config(config)
@@ -140,24 +145,29 @@ def config_cmd(
 ) -> None:
     """Manage clob configuration."""
     from .config.settings import CONFIG_FILE
+
     if show or not edit:
         typer.echo(f"Config file: {CONFIG_FILE}")
         if CONFIG_FILE.exists():
             typer.echo(CONFIG_FILE.read_text())
     if edit:
-        import os, subprocess
+        import os
+        import subprocess
+
         editor = os.environ.get("EDITOR", "nano")
         subprocess.run([editor, str(CONFIG_FILE)])
 
 
 @app.command("memory")
 def memory_cmd(
-    search: Annotated[Optional[str], typer.Option("--search", "-s")] = None,
+    search: Annotated[str | None, typer.Option("--search", "-s")] = None,
     sessions: Annotated[bool, typer.Option("--sessions")] = False,
 ) -> None:
     """Search memory / list sessions."""
+
     async def _run():
         from .memory.manager import MemoryManager
+
         mm = MemoryManager()
         await mm.start()
         try:
@@ -187,7 +197,6 @@ def doctor_cmd() -> None:
     typer.echo(f"DB:     {'✓' if DB_FILE.exists() else '○ (will be created)'}  {DB_FILE}")
 
     # Python version
-    import sys
     typer.echo(f"Python: {sys.version.split()[0]}")
 
     # Dependencies
@@ -202,6 +211,7 @@ def doctor_cmd() -> None:
     # Provider connectivity
     async def _check():
         from .providers.registry import ProviderRegistry
+
         config = _get_config()
         reg = ProviderRegistry()
         reg.load_from_config(config)
@@ -218,14 +228,18 @@ def doctor_cmd() -> None:
 @app.command("ollama")
 def ollama_cmd(
     action: Annotated[str, typer.Argument(help="Action: list | pull | chat")] = "list",
-    model: Annotated[Optional[str], typer.Argument()] = None,
+    model: Annotated[str | None, typer.Argument()] = None,
 ) -> None:
     """Manage Ollama local models."""
+
     async def _run():
-        from .providers.ollama import OllamaProvider
         from .config.settings import ProviderConfig
+        from .providers.ollama import OllamaProvider
+
         config = _get_config()
-        pconf = config.get_provider("ollama") or ProviderConfig(name="ollama", base_url="http://localhost:11434")
+        pconf = config.get_provider("ollama") or ProviderConfig(
+            name="ollama", base_url="http://localhost:11434"
+        )
         ollama = OllamaProvider(pconf)
 
         if action == "list":
@@ -255,10 +269,11 @@ if __name__ == "__main__":
 
 # ── v0.2.0 commands ───────────────────────────────────────────────────────────
 
+
 @app.command("workspace")
 def workspace_cmd(
     action: Annotated[str, typer.Argument(help="Action: index | stats | context")] = "stats",
-    path: Annotated[Optional[str], typer.Argument()] = None,
+    path: Annotated[str | None, typer.Argument()] = None,
 ) -> None:
     """Workspace indexing and context tools."""
     from .indexing import index_workspace
@@ -274,6 +289,7 @@ def workspace_cmd(
         typer.echo(idx.stats_report())
     elif action == "context":
         from .workspace import workspace_summary
+
         typer.echo(workspace_summary(target))
     else:
         typer.echo(f"Unknown action: {action}. Use: index | stats | context")
@@ -281,13 +297,15 @@ def workspace_cmd(
 
 @app.command("session")
 def session_cmd(
-    export: Annotated[Optional[int], typer.Option("--export", "-e", help="Export session ID")] = None,
-    delete: Annotated[Optional[int], typer.Option("--delete", "-d", help="Delete session ID")] = None,
+    export: Annotated[int | None, typer.Option("--export", "-e", help="Export session ID")] = None,
+    delete: Annotated[int | None, typer.Option("--delete", "-d", help="Delete session ID")] = None,
     fmt: Annotated[str, typer.Option("--format", "-f", help="Export format: md | json")] = "md",
 ) -> None:
     """Manage sessions: export or delete."""
+
     async def _run():
         from .memory.manager import MemoryManager
+
         mm = MemoryManager()
         await mm.start()
         try:
@@ -297,7 +315,10 @@ def session_cmd(
                     typer.echo(f"Session {export} not found or empty.")
                     return
                 if fmt == "json":
-                    data = [{"role": m.role, "content": m.content, "ts": str(m.created_at)} for m in msgs]
+                    data = [
+                        {"role": m.role, "content": m.content, "ts": str(m.created_at)}
+                        for m in msgs
+                    ]
                     out = f"session-{export}.json"
                     Path(out).write_text(json.dumps(data, indent=2))
                 else:
@@ -318,29 +339,34 @@ def session_cmd(
             await mm.stop()
 
     import json
+
     asyncio.run(_run())
 
 
 @app.command("plugins")
 def plugins_cmd(
     action: Annotated[str, typer.Argument(help="Action: list | install")] = "list",
-    name: Annotated[Optional[str], typer.Argument()] = None,
+    name: Annotated[str | None, typer.Argument()] = None,
 ) -> None:
     """Manage clob plugins."""
     if action == "list":
-        from .plugins.loader import plugin_loader, PLUGINS_DIR
+        from .plugins.loader import PLUGINS_DIR, plugin_loader
+
         loaded = plugin_loader.load_all()
         if loaded:
             typer.echo("Installed plugins:")
             for p in loaded:
                 plugin = plugin_loader.get(p)
-                typer.echo(f"  {p:20} v{getattr(plugin, 'version', '?'):8}  {getattr(plugin, 'description', '')}")
+                typer.echo(
+                    f"  {p:20} v{getattr(plugin, 'version', '?'):8}  {getattr(plugin, 'description', '')}"
+                )
         else:
             typer.echo(f"No plugins found in {PLUGINS_DIR}")
             typer.echo("Create plugins in ~/.config/clob/plugins/<name>/plugin.py")
     elif action == "install" and name:
         typer.echo(f"Installing {name} via pip…")
         import subprocess
+
         subprocess.run(["pip", "install", name])
         typer.echo("Done! Restart clob to activate the plugin.")
     else:
@@ -357,10 +383,11 @@ def usage_cmd() -> None:
 @app.command("theme")
 def theme_cmd(
     action: Annotated[str, typer.Argument(help="Action: list | set")] = "list",
-    name: Annotated[Optional[str], typer.Argument()] = None,
+    name: Annotated[str | None, typer.Argument()] = None,
 ) -> None:
     """Manage TUI themes."""
-    from .themes import list_themes, get_theme
+    from .themes import get_theme, list_themes
+
     if action == "list":
         themes = list_themes()
         typer.echo("Available themes:")

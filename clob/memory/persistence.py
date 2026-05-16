@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import aiosqlite
 
 from .models import Message, Session
-
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sessions (
@@ -74,7 +73,7 @@ class Database:
     async def create_session(
         self, title: str = "New Chat", provider: str = "", model: str = ""
     ) -> Session:
-        now = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
+        now = datetime.now(UTC).replace(tzinfo=None).isoformat()
         cur = await self.db.execute(
             "INSERT INTO sessions (title, provider, model, created_at, updated_at, metadata) VALUES (?,?,?,?,?,?)",
             (title, provider, model, now, now, "{}"),
@@ -102,7 +101,7 @@ class Database:
         return _row_to_session(row) if row else None
 
     async def update_session_title(self, session_id: int, title: str) -> None:
-        now = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
+        now = datetime.now(UTC).replace(tzinfo=None).isoformat()
         await self.db.execute(
             "UPDATE sessions SET title=?, updated_at=? WHERE id=?", (title, now, session_id)
         )
@@ -117,15 +116,13 @@ class Database:
     async def add_message(
         self, session_id: int, role: str, content: str, tokens: int = 0
     ) -> Message:
-        now = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
+        now = datetime.now(UTC).replace(tzinfo=None).isoformat()
         cur = await self.db.execute(
             "INSERT INTO messages (session_id, role, content, created_at, tokens, metadata) VALUES (?,?,?,?,?,?)",
             (session_id, role, content, now, tokens, "{}"),
         )
         # touch session updated_at
-        await self.db.execute(
-            "UPDATE sessions SET updated_at=? WHERE id=?", (now, session_id)
-        )
+        await self.db.execute("UPDATE sessions SET updated_at=? WHERE id=?", (now, session_id))
         await self.db.commit()
         return Message(
             id=cur.lastrowid,

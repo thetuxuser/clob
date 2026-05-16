@@ -15,21 +15,37 @@ Features:
 from __future__ import annotations
 
 import fnmatch
-import os
 from pathlib import Path
-from typing import Iterator
 
 # ── Default ignore patterns ────────────────────────────────────
 
 DEFAULT_IGNORES = {
-    "__pycache__", "*.pyc", "*.pyo", ".git", ".svn", ".hg",
-    "node_modules", ".venv", "venv", "env", ".env",
-    "dist", "build", "*.egg-info", ".ruff_cache", ".mypy_cache",
-    ".pytest_cache", "*.log", "*.db", "*.sqlite",
-    ".DS_Store", "Thumbs.db",
+    "__pycache__",
+    "*.pyc",
+    "*.pyo",
+    ".git",
+    ".svn",
+    ".hg",
+    "node_modules",
+    ".venv",
+    "venv",
+    "env",
+    ".env",
+    "dist",
+    "build",
+    "*.egg-info",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".pytest_cache",
+    "*.log",
+    "*.db",
+    "*.sqlite",
+    ".DS_Store",
+    "Thumbs.db",
 }
 
 # ── Token estimator (rough: 1 token ≈ 4 chars) ────────────────
+
 
 def estimate_tokens(text: str) -> int:
     return max(1, len(text) // 4)
@@ -60,9 +76,25 @@ def _should_ignore(path: Path, patterns: set[str]) -> bool:
 def _is_text_file(path: Path) -> bool:
     """Heuristic: check if file is likely text-readable."""
     binary_exts = {
-        ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".svg",
-        ".pdf", ".zip", ".tar", ".gz", ".whl", ".exe", ".bin",
-        ".pyc", ".so", ".dylib", ".db", ".sqlite",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".webp",
+        ".ico",
+        ".svg",
+        ".pdf",
+        ".zip",
+        ".tar",
+        ".gz",
+        ".whl",
+        ".exe",
+        ".bin",
+        ".pyc",
+        ".so",
+        ".dylib",
+        ".db",
+        ".sqlite",
     }
     return path.suffix.lower() not in binary_exts
 
@@ -164,7 +196,7 @@ def resolve_context_refs(text: str, cwd: Path | None = None) -> str:
     injections: list[str] = []
     remaining = text
 
-    for ref_type, pattern in [("@workspace", None), ("@dir ", None), ("@file ", None)]:
+    for ref_type, _pattern in [("@workspace", None), ("@dir ", None), ("@file ", None)]:
         if ref_type == "@workspace" and "@workspace" in text:
             injections.append(workspace_summary(cwd))
             remaining = remaining.replace("@workspace", "").strip()

@@ -11,17 +11,13 @@ Handles live rendering of partial markdown with:
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
-from typing import ClassVar
+from dataclasses import dataclass
 
-from rich.console import Console
 from rich.markdown import Markdown
-from rich.syntax import Syntax
 from rich.text import Text
-from textual.widget import Widget
-from textual.reactive import reactive
 from textual.app import RenderResult
-
+from textual.reactive import reactive
+from textual.widget import Widget
 
 _FENCE_RE = re.compile(r"^```(\w*)", re.MULTILINE)
 _FENCE_END_RE = re.compile(r"^```\s*$", re.MULTILINE)
@@ -69,7 +65,7 @@ class StreamBuffer:
         # If we're inside an open code fence, append a closing fence for rendering
         render_text = text
         if self.in_code_fence:
-            render_text = text + f"\n```"
+            render_text = text + "\n```"
 
         render_text += cursor
 

@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 from . import BaseAgent
 
@@ -22,6 +23,7 @@ When asked to write code:
 
     async def run(self, task: str, **kwargs: Any) -> AsyncIterator[str]:
         from ..providers.base import ChatMessage
+
         provider = self.runtime.registry.get(self.runtime.provider)
         if not provider:
             yield "No provider configured."

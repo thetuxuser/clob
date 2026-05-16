@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ..config.settings import DB_FILE
 from .models import Message, Session
 from .persistence import Database
-from ..config.settings import DB_FILE
 
 
 class MemoryManager:

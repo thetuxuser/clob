@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import json
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 import httpx
 
-from .base import BaseProvider, ChatChunk, ChatMessage, ModelInfo
 from ..config.settings import ProviderConfig
+from .base import BaseProvider, ChatChunk, ChatMessage, ModelInfo
 
 
 class OpenAICompatibleProvider(BaseProvider):
@@ -65,7 +66,7 @@ class OpenAICompatibleProvider(BaseProvider):
                 )
                 for m in models
             ]
-        except Exception as e:
+        except Exception:
             return []
 
     async def chat(

@@ -12,29 +12,58 @@ from __future__ import annotations
 
 import asyncio
 import shlex
+from collections.abc import Callable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
-from typing import Callable
 
 
-class PermissionLevel(str, Enum):
-    SAFE = "safe"           # Only allowlisted read-only commands
+class PermissionLevel(StrEnum):
+    SAFE = "safe"  # Only allowlisted read-only commands
     RESTRICTED = "restricted"  # Common dev commands, no system mutations
-    FULL = "full"           # All commands (requires explicit user consent)
+    FULL = "full"  # All commands (requires explicit user consent)
 
 
 SAFE_ALLOWLIST = {
-    "ls", "cat", "echo", "pwd", "date", "whoami", "uname",
-    "head", "tail", "wc", "grep", "find", "sort", "uniq",
-    "python", "python3", "pip", "git", "curl", "wget",
+    "ls",
+    "cat",
+    "echo",
+    "pwd",
+    "date",
+    "whoami",
+    "uname",
+    "head",
+    "tail",
+    "wc",
+    "grep",
+    "find",
+    "sort",
+    "uniq",
+    "python",
+    "python3",
+    "pip",
+    "git",
+    "curl",
+    "wget",
 }
 
 RESTRICTED_ALLOWLIST = SAFE_ALLOWLIST | {
-    "mkdir", "cp", "mv", "touch", "chmod",
-    "npm", "node", "cargo", "go", "make",
-    "docker", "docker-compose",
-    "pytest", "ruff", "black", "mypy",
+    "mkdir",
+    "cp",
+    "mv",
+    "touch",
+    "chmod",
+    "npm",
+    "node",
+    "cargo",
+    "go",
+    "make",
+    "docker",
+    "docker-compose",
+    "pytest",
+    "ruff",
+    "black",
+    "mypy",
 }
 
 
@@ -96,7 +125,10 @@ class Sandbox:
 
         if self.permission == PermissionLevel.SAFE:
             if cmd_name not in SAFE_ALLOWLIST:
-                return False, f"'{cmd_name}' not in safe allowlist. Use --permission restricted or full."
+                return (
+                    False,
+                    f"'{cmd_name}' not in safe allowlist. Use --permission restricted or full.",
+                )
         elif self.permission == PermissionLevel.RESTRICTED:
             if cmd_name not in RESTRICTED_ALLOWLIST:
                 return False, f"'{cmd_name}' not in restricted allowlist."
@@ -108,8 +140,12 @@ class Sandbox:
         allowed, reason = self._check_allowlist(command)
         if not allowed:
             result = ExecResult(
-                command=command, stdout="", stderr="",
-                returncode=1, blocked=True, block_reason=reason,
+                command=command,
+                stdout="",
+                stderr="",
+                returncode=1,
+                blocked=True,
+                block_reason=reason,
             )
             self._log.append(result)
             return result
@@ -122,24 +158,27 @@ class Sandbox:
                 cwd=str(self.cwd),
             )
             try:
-                stdout, stderr = await asyncio.wait_for(
-                    proc.communicate(), timeout=self.timeout
-                )
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=self.timeout)
                 result = ExecResult(
                     command=command,
                     stdout=stdout.decode(errors="replace"),
                     stderr=stderr.decode(errors="replace"),
                     returncode=proc.returncode or 0,
                 )
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 proc.kill()
                 result = ExecResult(
-                    command=command, stdout="", stderr="",
-                    returncode=-1, timed_out=True,
+                    command=command,
+                    stdout="",
+                    stderr="",
+                    returncode=-1,
+                    timed_out=True,
                 )
         except Exception as e:
             result = ExecResult(
-                command=command, stdout="", stderr=str(e),
+                command=command,
+                stdout="",
+                stderr=str(e),
                 returncode=1,
             )
 

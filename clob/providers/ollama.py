@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import json
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 import httpx
 
-from .base import BaseProvider, ChatChunk, ChatMessage, ModelInfo
 from ..config.settings import ProviderConfig
+from .base import BaseProvider, ChatChunk, ChatMessage, ModelInfo
 
 
 class OllamaProvider(BaseProvider):
@@ -101,7 +102,9 @@ class OllamaProvider(BaseProvider):
                 except json.JSONDecodeError:
                     continue
 
-    async def embeddings(self, text: str, model: str = "nomic-embed-text", **kwargs: Any) -> list[float]:
+    async def embeddings(
+        self, text: str, model: str = "nomic-embed-text", **kwargs: Any
+    ) -> list[float]:
         client = self._get_client()
         resp = await client.post("/api/embeddings", json={"model": model, "prompt": text})
         resp.raise_for_status()

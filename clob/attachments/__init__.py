@@ -11,12 +11,28 @@ import mimetypes
 from dataclasses import dataclass
 from pathlib import Path
 
-
 SUPPORTED_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
 SUPPORTED_TEXT_EXTS = {
-    ".txt", ".md", ".py", ".js", ".ts", ".go", ".rs", ".java",
-    ".c", ".cpp", ".h", ".css", ".html", ".json", ".yaml", ".yml",
-    ".toml", ".sh", ".sql", ".xml",
+    ".txt",
+    ".md",
+    ".py",
+    ".js",
+    ".ts",
+    ".go",
+    ".rs",
+    ".java",
+    ".c",
+    ".cpp",
+    ".h",
+    ".css",
+    ".html",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".sh",
+    ".sql",
+    ".xml",
 }
 
 
@@ -47,9 +63,7 @@ class Attachment:
         if self.is_image:
             return {
                 "type": "image_url",
-                "image_url": {
-                    "url": f"data:{self.mime_type};base64,{self.to_base64()}"
-                },
+                "image_url": {"url": f"data:{self.mime_type};base64,{self.to_base64()}"},
             }
         elif self.is_text:
             try:

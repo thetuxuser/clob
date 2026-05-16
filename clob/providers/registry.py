@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from ..config.settings import AppConfig, ProviderConfig
 from .base import BaseProvider
 from .groq import GroqProvider
 from .nvidia_build import NvidiaBuildProvider
 from .ollama import OllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
 from .openrouter import OpenRouterProvider
-from ..config.settings import AppConfig, ProviderConfig
 
 if TYPE_CHECKING:
     pass
