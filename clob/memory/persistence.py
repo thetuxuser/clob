@@ -74,10 +74,11 @@ class Database:
         self, title: str = "New Chat", provider: str = "", model: str = ""
     ) -> Session:
         now = datetime.now(UTC).replace(tzinfo=None).isoformat()
-        cur = await self.db.execute(
-            "INSERT INTO sessions (title, provider, model, created_at, updated_at, metadata) VALUES (?,?,?,?,?,?)",
-            (title, provider, model, now, now, "{}"),
+        sql = (
+            "INSERT INTO sessions (title, provider, model, created_at, updated_at, metadata) "
+            "VALUES (?,?,?,?,?,?)"
         )
+        cur = await self.db.execute(sql, (title, provider, model, now, now, "{}"))
         await self.db.commit()
         return Session(
             id=cur.lastrowid,
@@ -117,10 +118,11 @@ class Database:
         self, session_id: int, role: str, content: str, tokens: int = 0
     ) -> Message:
         now = datetime.now(UTC).replace(tzinfo=None).isoformat()
-        cur = await self.db.execute(
-            "INSERT INTO messages (session_id, role, content, created_at, tokens, metadata) VALUES (?,?,?,?,?,?)",
-            (session_id, role, content, now, tokens, "{}"),
+        sql = (
+            "INSERT INTO messages (session_id, role, content, created_at, tokens, metadata) "
+            "VALUES (?,?,?,?,?,?)"
         )
+        cur = await self.db.execute(sql, (session_id, role, content, now, tokens, "{}"))
         # touch session updated_at
         await self.db.execute("UPDATE sessions SET updated_at=? WHERE id=?", (now, session_id))
         await self.db.commit()

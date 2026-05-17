@@ -357,9 +357,9 @@ def plugins_cmd(
             typer.echo("Installed plugins:")
             for p in loaded:
                 plugin = plugin_loader.get(p)
-                typer.echo(
-                    f"  {p:20} v{getattr(plugin, 'version', '?'):8}  {getattr(plugin, 'description', '')}"
-                )
+                v = getattr(plugin, "version", "?")
+                desc = getattr(plugin, "description", "")
+                typer.echo(f"  {p:20} v{v:8}  {desc}")
         else:
             typer.echo(f"No plugins found in {PLUGINS_DIR}")
             typer.echo("Create plugins in ~/.config/clob/plugins/<name>/plugin.py")

@@ -119,6 +119,7 @@ class ImageRenderer:
                 lines.append(row)
             return "\n".join(lines)
         except ImportError:
-            return f"[Image: {path.name} ({path.stat().st_size // 1024}KB) — install Pillow for preview]"
+            size_kb = path.stat().st_size // 1024
+            return f"[Image: {path.name} ({size_kb}KB) — install Pillow for preview]"
         except Exception as e:
             return f"[Image preview error: {e}]"
