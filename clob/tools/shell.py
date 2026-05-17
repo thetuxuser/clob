@@ -14,8 +14,17 @@ class ShellResult(NamedTuple):
 
 
 SAFE_MODE_ALLOWLIST = {
-    "ls", "cat", "echo", "pwd", "date", "whoami",
-    "git", "python", "python3", "pip", "uname",
+    "ls",
+    "cat",
+    "echo",
+    "pwd",
+    "date",
+    "whoami",
+    "git",
+    "python",
+    "python3",
+    "pip",
+    "uname",
 }
 
 
@@ -41,7 +50,7 @@ async def run_shell(
     )
     try:
         stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
-    except asyncio.TimeoutError:
+    except TimeoutError:
         proc.kill()
         return ShellResult("", "Command timed out.", -1)
 

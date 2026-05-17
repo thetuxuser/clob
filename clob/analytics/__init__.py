@@ -9,8 +9,7 @@ Tracks:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, date
-
+from datetime import datetime
 
 # ── Provider pricing (per 1M tokens, USD) ─────────────────────
 

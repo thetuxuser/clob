@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import time
+from collections.abc import AsyncIterator
 from pathlib import Path
-from typing import Any, AsyncIterator
+from typing import Any
 
 from ..analytics import AnalyticsTracker, TurnStats
 from ..config.settings import AppConfig
@@ -110,9 +111,7 @@ class Runtime:
             messages.append(ChatMessage(role=msg.role, content=msg.content))
         return messages
 
-    async def stream_response(
-        self, user_input: str, **kwargs: Any
-    ) -> AsyncIterator[ChatChunk]:
+    async def stream_response(self, user_input: str, **kwargs: Any) -> AsyncIterator[ChatChunk]:
         provider = self.registry.get(self._current_provider)
         if not provider:
             raise RuntimeError(
@@ -120,7 +119,7 @@ class Runtime:
                 "Run 'clob doctor' to check setup."
             )
 
-        resolved_input = await self._resolve_input(user_input)
+        await self._resolve_input(user_input)
         session_id = await self.ensure_session()
         await self.memory.add_message(session_id, "user", user_input)
 

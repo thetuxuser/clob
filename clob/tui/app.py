@@ -3,24 +3,30 @@
 from __future__ import annotations
 
 import asyncio
-import json
 from pathlib import Path
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, ScrollableContainer, Vertical
 from textual.widgets import (
-    Button, Footer, Header, Input, Label, ListItem, ListView, Static,
+    Button,
+    Footer,
+    Header,
+    Input,
+    Label,
+    ListItem,
+    ListView,
+    Static,
 )
 
 from ..config.settings import AppConfig
 from ..core.runtime import Runtime
 from ..memory.models import Session
-from .screens.settings import SettingsScreen
-from .screens.palette import CommandPalette
-from .screens.usage import UsageScreen
 from .screens.memory_search import MemorySearchScreen
-from .widgets import MessageWidget, StreamingMarkdownWidget, StatusBar
+from .screens.palette import CommandPalette
+from .screens.settings import SettingsScreen
+from .screens.usage import UsageScreen
+from .widgets import MessageWidget, StatusBar, StreamingMarkdownWidget
 
 CSS_PATH = Path(__file__).parent / "themes" / "dark.tcss"
 
@@ -31,7 +37,9 @@ class SessionItem(ListItem):
         self.session = session
 
     def compose(self) -> ComposeResult:
-        title = self.session.title[:22] + "…" if len(self.session.title) > 23 else self.session.title
+        title = (
+            self.session.title[:22] + "…" if len(self.session.title) > 23 else self.session.title
+        )
         yield Label(f"💬 {title}")
 
 
@@ -106,19 +114,21 @@ class ClobApp(App):
         container = self.query_one("#chat-container", Vertical)
         caps = self.runtime.capabilities
         badge_str = "  ".join(caps.badge_list()) or "chat streaming"
-        await container.mount(Static(
-            f"\n[bold #58a6ff]clob v0.2.0[/bold #58a6ff] — Universal AI in your terminal\n\n"
-            f"[dim]Provider:[/dim] [green]{self.runtime.provider}[/green]  "
-            f"[dim]Model:[/dim] {self.runtime.model}\n"
-            f"[dim]Capabilities:[/dim] {badge_str}\n\n"
-            f"[dim]Tips:\n"
-            f"  @file path.py   → inject file context\n"
-            f"  @dir src/       → inject directory\n"
-            f"  @workspace      → inject workspace overview\n"
-            f"  Ctrl+P          → command palette\n"
-            f"  Ctrl+U          → usage report[/dim]\n",
-            id="welcome-msg",
-        ))
+        await container.mount(
+            Static(
+                f"\n[bold #58a6ff]clob v0.2.0[/bold #58a6ff] — Universal AI in your terminal\n\n"
+                f"[dim]Provider:[/dim] [green]{self.runtime.provider}[/green]  "
+                f"[dim]Model:[/dim] {self.runtime.model}\n"
+                f"[dim]Capabilities:[/dim] {badge_str}\n\n"
+                f"[dim]Tips:\n"
+                f"  @file path.py   → inject file context\n"
+                f"  @dir src/       → inject directory\n"
+                f"  @workspace      → inject workspace overview\n"
+                f"  Ctrl+P          → command palette\n"
+                f"  Ctrl+U          → usage report[/dim]\n",
+                id="welcome-msg",
+            )
+        )
 
     # ── Header ─────────────────────────────────────────────────
 
@@ -128,9 +138,7 @@ class ClobApp(App):
             self.query_one("#provider-label", Label).update(
                 f"[bold green]{self.runtime.provider}[/bold green]"
             )
-            self.query_one("#model-label", Label).update(
-                f"[dim]{self.runtime.model}[/dim]"
-            )
+            self.query_one("#model-label", Label).update(f"[dim]{self.runtime.model}[/dim]")
             badge_str = "  ".join(caps.badge_list()[:3])
             self.query_one("#caps-label", Label).update(
                 f"  [dim cyan]{badge_str}[/dim cyan]" if badge_str else ""
@@ -229,6 +237,7 @@ class ClobApp(App):
         def on_command(action: str | None) -> None:
             if action:
                 self.call_later(self._dispatch_command, action)
+
         await self.push_screen(CommandPalette(), on_command)
 
     async def _dispatch_command(self, action: str) -> None:
@@ -259,6 +268,7 @@ class ClobApp(App):
                 self.config.default.temperature = result["temperature"]
                 self._update_header()
                 self.notify("Settings saved!", severity="information")
+
         await self.push_screen(SettingsScreen(self.config), on_close)
 
     async def action_show_usage(self) -> None:
@@ -273,7 +283,7 @@ class ClobApp(App):
             self.notify("No active session to export.", severity="warning")
             return
         history = await self.runtime.memory.get_history(self.runtime._current_session_id)
-        lines = [f"# Session Export\n"]
+        lines = ["# Session Export\n"]
         for msg in history:
             lines.append(f"**{msg.role.title()}:** {msg.content}\n")
         output_path = Path.cwd() / "clob-session-export.md"

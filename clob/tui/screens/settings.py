@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from textual.app import ComposeResult
+from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
-from textual.widgets import Button, Input, Label, Select, Static
-from textual.containers import Vertical, Horizontal
+from textual.widgets import Button, Input, Label, Select
 
 
 class SettingsScreen(ModalScreen):
@@ -105,11 +105,13 @@ class SettingsScreen(ModalScreen):
                 model = self.query_one("#model-input", Input).value
                 max_tokens = int(self.query_one("#max-tokens-input", Input).value)
                 temperature = float(self.query_one("#temperature-input", Input).value)
-                self.dismiss({
-                    "provider": str(provider),
-                    "model": model,
-                    "max_tokens": max_tokens,
-                    "temperature": temperature,
-                })
+                self.dismiss(
+                    {
+                        "provider": str(provider),
+                        "model": model,
+                        "max_tokens": max_tokens,
+                        "temperature": temperature,
+                    }
+                )
             except (ValueError, Exception) as e:
                 self.app.notify(f"Invalid settings: {e}", severity="error")

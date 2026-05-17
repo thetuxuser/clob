@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -48,7 +48,7 @@ CAPABILITIES: dict[str, ProviderCapabilities] = {
     "openrouter": ProviderCapabilities(
         chat=True,
         streaming=True,
-        vision=True,        # depends on chosen model, but many support it
+        vision=True,  # depends on chosen model, but many support it
         image_generation=False,
         embeddings=False,
         tool_calling=True,

@@ -1,6 +1,6 @@
-from .settings import SettingsScreen
-from .palette import CommandPalette
-from .usage import UsageScreen
 from .memory_search import MemorySearchScreen
+from .palette import CommandPalette
+from .settings import SettingsScreen
+from .usage import UsageScreen
 
 __all__ = ["SettingsScreen", "CommandPalette", "UsageScreen", "MemorySearchScreen"]

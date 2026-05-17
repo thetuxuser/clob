@@ -8,8 +8,6 @@ from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
-from pydantic_settings import BaseSettings
-
 
 CONFIG_DIR = Path.home() / ".config" / "clob"
 CONFIG_FILE = CONFIG_DIR / "config.toml"
@@ -60,7 +58,7 @@ class AppConfig(BaseModel):
     profiles: dict[str, Any] = Field(default_factory=dict)
 
     @classmethod
-    def load(cls) -> "AppConfig":
+    def load(cls) -> AppConfig:
         if not CONFIG_FILE.exists():
             return cls._create_defaults()
         with open(CONFIG_FILE, "rb") as f:
@@ -68,7 +66,7 @@ class AppConfig(BaseModel):
         return cls._from_dict(data)
 
     @classmethod
-    def _from_dict(cls, data: dict[str, Any]) -> "AppConfig":
+    def _from_dict(cls, data: dict[str, Any]) -> AppConfig:
         default = DefaultConfig(**data.get("default", {}))
         providers: dict[str, ProviderConfig] = {}
         for name, pdata in data.get("providers", {}).items():
@@ -80,15 +78,20 @@ class AppConfig(BaseModel):
         p = self.profiles.get(name)
         if not p:
             return False
-        if p.get("provider"): self.default.provider = p["provider"]
-        if p.get("model"): self.default.model = p["model"]
-        if p.get("system_prompt"): self.default.system_prompt = p["system_prompt"]
-        if p.get("temperature") is not None: self.default.temperature = p["temperature"]
-        if p.get("max_tokens") is not None: self.default.max_tokens = p["max_tokens"]
+        if p.get("provider"):
+            self.default.provider = p["provider"]
+        if p.get("model"):
+            self.default.model = p["model"]
+        if p.get("system_prompt"):
+            self.default.system_prompt = p["system_prompt"]
+        if p.get("temperature") is not None:
+            self.default.temperature = p["temperature"]
+        if p.get("max_tokens") is not None:
+            self.default.max_tokens = p["max_tokens"]
         return True
 
     @classmethod
-    def _create_defaults(cls) -> "AppConfig":
+    def _create_defaults(cls) -> AppConfig:
         CONFIG_DIR.mkdir(parents=True, exist_ok=True)
         config = cls()
         config.providers = {
@@ -151,6 +154,7 @@ def _write_default_config(config: AppConfig) -> None:
 
 class ProfileConfig(BaseModel):
     """A named configuration profile (work, local, etc.)."""
+
     provider: str = ""
     model: str = ""
     system_prompt: str = ""

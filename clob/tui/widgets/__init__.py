@@ -10,9 +10,11 @@ from textual.widgets import Static
 
 class MessageWidget(Static):
     """Renders a single chat message with rich markdown."""
+
     DEFAULT_CSS = """
     MessageWidget { height: auto; margin: 0 0 1 0; }
     """
+
     def __init__(self, role: str, content: str, **kwargs) -> None:
         super().__init__(**kwargs)
         self.role = role
@@ -31,6 +33,7 @@ class MessageWidget(Static):
 
 class StreamingMarkdownWidget(Static):
     """Live streaming markdown widget with code-fence awareness."""
+
     DEFAULT_CSS = """
     StreamingMarkdownWidget {
         height: auto; margin: 0 0 1 0;
@@ -85,9 +88,11 @@ class StreamingMarkdownWidget(Static):
 
 class StatusBar(Static):
     """Enhanced status bar with provider, model, stats, streaming state."""
+
     DEFAULT_CSS = """
     StatusBar { height: 1; background: #161b22; color: #8b949e; padding: 0 1; dock: bottom; }
     """
+
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self._provider = ""
@@ -96,8 +101,14 @@ class StatusBar(Static):
         self._stats = ""
         self._capabilities: list[str] = []
 
-    def update_info(self, provider: str, model: str, status: str = "ready",
-                    stats: str = "", capabilities: list[str] | None = None) -> None:
+    def update_info(
+        self,
+        provider: str,
+        model: str,
+        status: str = "ready",
+        stats: str = "",
+        capabilities: list[str] | None = None,
+    ) -> None:
         self._provider = provider
         self._model = model
         self._status = status
