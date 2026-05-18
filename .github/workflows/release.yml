@@ -13,6 +13,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -72,12 +73,12 @@ jobs:
       - run: pip install -e . pyinstaller
 
       - name: Build
-       shell: bash
-       run: |
-           pyinstaller --onefile --name clob-windows-x64 \
-           --collect-all clob \
-           --hidden-import pkg_resources \
-           main.py
+        shell: bash
+        run: |
+          pyinstaller --onefile --name ${{ matrix.artifact }} \
+          --collect-all clob \
+          --hidden-import pkg_resources \
+          main.py
 
       - uses: actions/upload-artifact@v4
         with:
@@ -131,7 +132,6 @@ jobs:
 
   github-release:
     needs: [build-wheel, build-binaries, docker]
-
     runs-on: ubuntu-latest
 
     steps:
@@ -142,12 +142,16 @@ jobs:
           path: artifacts/
 
       - name: Collect release assets
+        shell: bash
         run: |
           mkdir -p release-assets
+
           # Move wheel and sdist
           find artifacts/dist -type f -exec cp {} release-assets/ \;
+
           # Move platform binaries
           find artifacts/clob-* -type f -exec cp {} release-assets/ \;
+
           ls -la release-assets/
 
       - uses: softprops/action-gh-release@v2
@@ -163,6 +167,7 @@ jobs:
     steps:
       - name: Compute tarball SHA256
         id: sha
+        shell: bash
         run: |
           URL="https://github.com/crishacks/clob/archive/refs/tags/${{ github.ref_name }}.tar.gz"
           SHA=$(curl -sL "$URL" | shasum -a 256 | cut -d' ' -f1)
