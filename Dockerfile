@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir hatchling
 
-COPY pyproject.toml .
+COPY pyproject.toml README.md .
 COPY clob/ clob/
 
 RUN pip install --no-cache-dir ".[dev]" --prefix=/install
