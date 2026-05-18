@@ -54,25 +54,6 @@ clob is an open-source universal AI terminal platform with a modern TUI. Connect
 pip install clob
 ```
 
-### Homebrew (macOS / Linux)
-
-```bash
-brew tap crishacks/tap
-brew install clob
-```
-
-### Scoop (Windows)
-
-```powershell
-scoop bucket add crishacks https://github.com/crishacks/scoop-clob
-scoop install crishacks/clob
-```
-
-### Chocolatey (Windows)
-
-```powershell
-choco install clob
-```
 
 ### Docker
 
