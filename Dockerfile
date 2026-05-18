@@ -16,7 +16,7 @@ FROM python:3.12-slim
 LABEL org.opencontainers.image.title="clob"
 LABEL org.opencontainers.image.description="Universal AI in your terminal"
 LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.source="https://github.com/clob-ai/clob"
+LABEL org.opencontainers.image.source="https://github.com/crishacks/clob"
 
 WORKDIR /app
 
