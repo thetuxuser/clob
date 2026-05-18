@@ -78,7 +78,7 @@ jobs:
           pyinstaller --onefile --name ${{ matrix.artifact }} \
           --collect-all clob \
           --hidden-import pkg_resources \
-          main.py
+          clob/main.py
 
       - uses: actions/upload-artifact@v4
         with:
