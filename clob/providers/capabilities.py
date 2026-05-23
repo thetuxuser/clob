@@ -82,6 +82,14 @@ CAPABILITIES: dict[str, ProviderCapabilities] = {
         json_mode=True,
         max_context=32768,
     ),
+    "anthropic": ProviderCapabilities(
+        chat=True,
+        streaming=True,
+        vision=True,
+        tool_calling=True,
+        json_mode=True,
+        max_context=200000,
+    ),
     # Default for unknown providers
     "default": ProviderCapabilities(),
 }

@@ -1,4 +1,4 @@
-"""clob TUI v0.2.0 — modernized terminal AI workspace."""
+"""clob TUI v0.3.0 — modernized terminal AI workspace."""
 
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ class SessionItem(ListItem):
 
 
 class ClobApp(App):
-    """clob v0.2.0 — Universal AI terminal platform."""
+    """clob v0.3.0 — Universal AI terminal platform."""
 
     CSS_PATH = str(CSS_PATH)
     TITLE = "clob"
@@ -116,7 +116,7 @@ class ClobApp(App):
         badge_str = "  ".join(caps.badge_list()) or "chat streaming"
         await container.mount(
             Static(
-                f"\n[bold #58a6ff]clob v0.2.0[/bold #58a6ff] — Universal AI in your terminal\n\n"
+                f"\n[bold #58a6ff]clob v0.3.0[/bold #58a6ff] — Universal AI in your terminal\n\n"
                 f"[dim]Provider:[/dim] [green]{self.runtime.provider}[/green]  "
                 f"[dim]Model:[/dim] {self.runtime.model}\n"
                 f"[dim]Capabilities:[/dim] {badge_str}\n\n"

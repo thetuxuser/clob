@@ -1,4 +1,4 @@
-"""Upgraded TUI widgets for clob v0.2.0."""
+"""Upgraded TUI widgets for clob v0.3.0."""
 
 from __future__ import annotations
 

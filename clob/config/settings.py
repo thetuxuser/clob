@@ -117,6 +117,11 @@ class AppConfig(BaseModel):
                 base_url="https://integrate.api.nvidia.com/v1",
                 api_key="env:NVIDIA_API_KEY",
             ),
+            "anthropic": ProviderConfig(
+                name="anthropic",
+                base_url="https://api.anthropic.com/v1",
+                api_key="env:ANTHROPIC_API_KEY",
+            ),
         }
         _write_default_config(config)
         return config

@@ -1,4 +1,4 @@
-"""Core runtime v0.2.0 — wires providers, memory, analytics, workspace."""
+"""Core runtime v0.3.0 — wires providers, memory, analytics, workspace."""
 
 from __future__ import annotations
 
@@ -14,11 +14,12 @@ from ..providers.base import ChatChunk, ChatMessage
 from ..providers.capabilities import ProviderCapabilities, get_capabilities
 from ..providers.registry import ProviderRegistry
 from ..workspace import resolve_context_refs
+from .mcp import MCPManager
 
 
 class Runtime:
     """
-    Central runtime v0.2.0:
+    Central runtime v0.3.0:
     - Provider selection + capability awareness
     - Streaming with token counting
     - Analytics tracking
@@ -31,6 +32,7 @@ class Runtime:
         self.registry = ProviderRegistry()
         self.memory = MemoryManager()
         self.analytics = AnalyticsTracker()
+        self.mcp = MCPManager(self)
         self._current_session_id: int | None = None
         self._current_provider: str = config.default.provider
         self._current_model: str = config.default.model
@@ -43,6 +45,7 @@ class Runtime:
     async def stop(self) -> None:
         await self.registry.close_all()
         await self.memory.stop()
+        await self.mcp.close_all()
 
     @property
     def provider(self) -> str:
