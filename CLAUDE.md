@@ -9,7 +9,7 @@ This file provides context for AI coding assistants (Claude, Copilot, Cursor, et
 **clob** is an open-source universal AI terminal platform written in Python.
 
 - **Repo:** [github.com/crishacks/clob](https://github.com/crishacks/clob)
-- **Version:** 0.2.0
+- **Version:** 0.3.0
 - **License:** MIT
 - **Python:** 3.12+
 

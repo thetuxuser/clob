@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from contextlib import AsyncExitStack
 from typing import TYPE_CHECKING, Any
 

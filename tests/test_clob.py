@@ -1,4 +1,4 @@
-"""clob v0.2.0 full test suite."""
+"""clob v0.3.0 full test suite."""
 
 from __future__ import annotations
 

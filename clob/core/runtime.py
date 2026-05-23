@@ -1,4 +1,4 @@
-"""Core runtime v0.2.0 — wires providers, memory, analytics, workspace."""
+"""Core runtime v0.3.0 — wires providers, memory, analytics, workspace."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from .mcp import MCPManager
 
 class Runtime:
     """
-    Central runtime v0.2.0:
+    Central runtime v0.3.0:
     - Provider selection + capability awareness
     - Streaming with token counting
     - Analytics tracking

@@ -9,12 +9,18 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Conventi
 ## [Unreleased]
 
 ### Planned
-- MCP (Model Context Protocol) support
-- Anthropic Claude native provider
 - Voice input support
-- Multi-agent workflows
 - VS Code extension
 - Web UI companion
+
+---
+
+## [0.3.0] — 2026-05-23
+
+### Added
+- **Anthropic Claude native provider** — native `/messages` API support with streaming and vision
+- **MCP (Model Context Protocol) support** — foundation for connecting to external MCP servers and tools
+- **Multi-agent workflows** — Orchestrator agent capable of delegating tasks to specialized agents
 
 ---
 
@@ -132,11 +138,13 @@ This project adheres to [Semantic Versioning](https://semver.org/) and [Conventi
 
 | Version | Date | Highlights |
 |---------|------|-----------|
+| 0.3.0 | 2026-05-23 | Anthropic Claude, MCP support, multi-agent workflows |
 | 0.2.0 | 2026-05-16 | Analytics, workspace context, command palette, themes, sandbox |
 | 0.1.0 | 2026-05-15 | Initial release — TUI, streaming, 5 providers, SQLite memory |
 
 ---
 
-[Unreleased]: https://github.com/crishacks/clob/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/crishacks/clob/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/crishacks/clob/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/crishacks/clob/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/crishacks/clob/releases/tag/v0.1.0

@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $packageName = 'clob'
-$version     = '0.2.0'
+$version     = '0.3.0'
 
 Write-Host "Installing clob $version via pip..." -ForegroundColor Cyan
 

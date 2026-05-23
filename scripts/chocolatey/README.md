@@ -5,7 +5,7 @@
 1. Create a Chocolatey account at chocolatey.org
 2. Pack the package: `choco pack clob/clob.nuspec`
 3. Test locally: `choco install clob --source "."`
-4. Push to Chocolatey: `choco push clob.0.2.0.nupkg --source https://push.chocolatey.org`
+4. Push to Chocolatey: `choco push clob.0.3.0.nupkg --source https://push.chocolatey.org`
 
 ## Installation (Users)
 
