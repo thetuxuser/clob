@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://python.org)
 [![PyPI](https://img.shields.io/pypi/v/clob.svg)](https://pypi.org/project/clob/)
-[![CI](https://github.com/crishacks/clob/actions/workflows/ci.yml/badge.svg)](https://github.com/crishacks/clob/actions)
+[![CI](https://github.com/thetuxuser/clob/actions/workflows/ci.yml/badge.svg)](https://github.com/thetuxuser/clob/actions)
 
 clob is an open-source universal AI terminal platform with a modern TUI. Connect any AI provider, stream responses, manage sessions, and build AI workflows — all from your terminal.
 
@@ -60,13 +60,13 @@ pip install clob
 ```bash
 docker run -it --rm \
   -e OPENROUTER_API_KEY=$OPENROUTER_API_KEY \
-  ghcr.io/crishacks/clob:latest
+  ghcr.io/thetuxuser/clob:latest
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/crishacks/clob
+git clone https://github.com/thetuxuser/clob
 cd clob
 pip install -e .
 ```
