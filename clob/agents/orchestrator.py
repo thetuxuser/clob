@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from . import BaseAgent
 from .coder import CoderAgent
@@ -19,7 +19,9 @@ class Orchestrator(BaseAgent):
 
     name = "orchestrator"
 
-    SYSTEM_PROMPT = """You are an AI orchestrator. Your job is to break down complex tasks and delegate them to specialized agents.
+    SYSTEM_PROMPT = """You are an AI orchestrator.
+Your job is to break down complex tasks and delegate them to specialized agents.
+
 Available agents:
 - coder: Expert software engineer for writing and editing code.
 
@@ -56,7 +58,7 @@ To delegate a task, use the following format:
         async for chunk in provider.stream_chat(messages, model=self.runtime.model, **kwargs):
             if chunk.delta:
                 full_response += chunk.delta
-                yield chunk
+                yield chunk.delta
 
         # Simple delegation logic: check for [DELEGATE: agent] in response
         if "[DELEGATE:" in full_response:

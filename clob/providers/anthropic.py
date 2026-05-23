@@ -46,7 +46,9 @@ class AnthropicProvider(BaseProvider):
         # Anthropic doesn't have a public models endpoint that is easy to use like OpenAI's
         # Returning common ones or empty list if they decide to add one.
         return [
-            ModelInfo(id="claude-3-5-sonnet-20241022", name="Claude 3.5 Sonnet", provider="anthropic"),
+            ModelInfo(
+                id="claude-3-5-sonnet-20241022", name="Claude 3.5 Sonnet", provider="anthropic"
+            ),
             ModelInfo(id="claude-3-opus-20240229", name="Claude 3 Opus", provider="anthropic"),
             ModelInfo(id="claude-3-sonnet-20240229", name="Claude 3 Sonnet", provider="anthropic"),
             ModelInfo(id="claude-3-haiku-20240307", name="Claude 3 Haiku", provider="anthropic"),

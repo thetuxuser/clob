@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncIterator
-from typing import Any, TYPE_CHECKING
+from contextlib import AsyncExitStack
+from typing import TYPE_CHECKING, Any
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -19,7 +19,7 @@ class MCPManager:
     def __init__(self, runtime: Runtime) -> None:
         self.runtime = runtime
         self.sessions: dict[str, ClientSession] = {}
-        self._exit_stacks: list[asyncio.ExitStack] = []
+        self._exit_stacks: list[AsyncExitStack] = []
 
     async def connect_stdio(self, name: str, command: str, args: list[str]) -> None:
         """Connect to an MCP server via stdio."""
@@ -29,7 +29,7 @@ class MCPManager:
             env=None,
         )
 
-        stack = asyncio.ExitStack()
+        stack = AsyncExitStack()
         self._exit_stacks.append(stack)
 
         read, write = await stack.enter_async_context(stdio_client(server_params))
