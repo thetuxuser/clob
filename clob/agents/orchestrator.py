@@ -63,6 +63,7 @@ To delegate a task, use the following format:
         # Simple delegation logic: check for [DELEGATE: agent] in response
         if "[DELEGATE:" in full_response:
             import re
+
             match = re.search(r"\[DELEGATE:\s*(\w+)\]\s*(.*)", full_response, re.DOTALL)
             if match:
                 agent_name = match.group(1).lower()

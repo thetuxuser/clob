@@ -43,12 +43,14 @@ class MCPManager:
         for name, session in self.sessions.items():
             tools_result = await session.list_tools()
             for tool in tools_result.tools:
-                all_tools.append({
-                    "server": name,
-                    "name": tool.name,
-                    "description": tool.description,
-                    "input_schema": tool.inputSchema,
-                })
+                all_tools.append(
+                    {
+                        "server": name,
+                        "name": tool.name,
+                        "description": tool.description,
+                        "input_schema": tool.inputSchema,
+                    }
+                )
         return all_tools
 
     async def call_tool(self, server_name: str, tool_name: str, arguments: dict[str, Any]) -> Any:
