@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from ..config.settings import AppConfig, ProviderConfig
+from .anthropic import AnthropicProvider
 from .base import BaseProvider
 from .groq import GroqProvider
 from .nvidia_build import NvidiaBuildProvider
@@ -21,6 +22,7 @@ _BUILTIN_PROVIDERS: dict[str, type[BaseProvider]] = {
     "groq": GroqProvider,
     "nvidia": NvidiaBuildProvider,
     "ollama": OllamaProvider,
+    "anthropic": AnthropicProvider,
 }
 
 
